@@ -3,11 +3,16 @@ services:
   mosquitto:
     container_name: mosquitto
     image: eclipse-mosquitto
+    hostname: mosquitto
     restart: unless-stopped
+    env_file:
+      - ./provision/mosquitto.env
+      - path: ./provision/mosquitto.prod.env
+        required: false
     ports:
-      - "1883:1883"
-      - "8883:8883"
-      - "9001:9001"
+      - "1883:1883" # MQTT
+      - "8883:8883" # MQTTS (secure)
+      - "9001:9001" # WebSockets
     volumes:
       - ./volumes/mosquitto/config:/mosquitto/config
       - ./volumes/mosquitto/data:/mosquitto/data

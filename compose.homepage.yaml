@@ -1,0 +1,14 @@
+services:
+
+  homepage:
+    container_name: homepage
+    image: ghcr.io/gethomepage/homepage:latest
+    restart: unless-stopped
+    env_file:
+      - ./provision/homepage.env
+      - path: ./provision/homepage.prod.env
+        required: false
+    ports:
+      - "3002:3000"
+    volumes:
+      - ./volumes/homepage/config:/app/config
