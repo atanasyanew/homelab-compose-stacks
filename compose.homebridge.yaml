@@ -6,6 +6,8 @@ services:
     restart: always
     env_file:
       - ./provision/homebridge.env
+      - path: ./provision/homebridge.prod.env
+        required: false
     volumes:
       - ./volumes/homebridge:/homebridge
     ports:

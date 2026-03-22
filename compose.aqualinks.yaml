@@ -7,6 +7,8 @@ services:
     user: "0" # root needed so node-red can match filesystem UIDs
     env_file:
       - ./provision/aqualinks.env
+      - path: ./provision/aqualinks.prod.env
+        required: false
     volumes:
       - ./volumes/aqualinks/data:/data
     ports:

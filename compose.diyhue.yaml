@@ -6,6 +6,8 @@ services:
     restart: unless-stopped
     env_file:
       - ./provision/diyhue.env
+      - path: ./provision/diyhue.prod.env
+        required: false
     volumes:
       - ./volumes/diyhue/config:/opt/hue-emulator/export
     ports:

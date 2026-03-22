@@ -6,6 +6,8 @@ services:
     restart: unless-stopped
     env_file:
       - ./provision/nocodb.env
+      - path: ./provision/nocodb.prod.env
+        required: false
     volumes:
       - nocodb-db-data:/var/lib/postgresql/data
     healthcheck:
@@ -23,6 +25,8 @@ services:
         condition: service_healthy
     env_file:
       - ./provision/nocodb.env
+      - path: ./provision/nocodb.prod.env
+        required: false
     volumes:
       - ./volumes/nocodb/data:/usr/app/data
     ports:

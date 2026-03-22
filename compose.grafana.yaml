@@ -6,6 +6,8 @@ services:
     restart: unless-stopped
     env_file:
       - ./provision/grafana.env
+      - path: ./provision/grafana.prod.env
+        required: false
     volumes:
       - ./volumes/grafana/data:/var/lib/grafana
     ports:

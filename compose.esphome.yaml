@@ -7,6 +7,8 @@ services:
     privileged: true
     env_file:
       - ./provision/esphome.env
+      - path: ./provision/esphome.prod.env
+        required: false
     volumes:
       - ./volumes/esphome/config:/config
       - /etc/localtime:/etc/localtime:ro

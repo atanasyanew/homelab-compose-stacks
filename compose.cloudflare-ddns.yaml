@@ -6,3 +6,5 @@ services:
     restart: always
     env_file:
       - ./provision/cloudflare-ddns.env
+      - path: ./provision/cloudflare-ddns.prod.env
+        required: false

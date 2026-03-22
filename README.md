@@ -238,22 +238,25 @@ Environment override pattern (base + optional prod)
 
 Use this when you want per-machine or production values without editing module files.
 
+Preferred: define this directly in the app module (`compose.<app>.yaml`) so every stack that includes it gets the same behavior.
+
 ```yaml
 services:
-  homebridge:
-    # Base env loads first; prod env is optional and overrides matching keys.
-    env_file: !override
-      - ./provision/homebridge.env
-      - path: ./provision/homebridge.prod.env
+  open-webui:
+    env_file:
+      - ./provision/open-webui.env
+      - path: ./provision/open-webui.prod.env
         required: false
 ```
+
+Optional: if you need this only for one stack, apply it in the stack file with a `services:` override (and use `!override` when replacing an existing list from included modules).
 
 Behavior:
 
 - Both files are loaded in order.
-- If a key exists in both files, the later file wins (`homebridge.prod.env`).
-- Keys missing from `homebridge.prod.env` remain from `homebridge.env`.
-- If `homebridge.prod.env` is absent, Compose still runs because `required: false`.
+- If a key exists in both files, the later file wins (`<app>.prod.env`).
+- Keys missing from `<app>.prod.env` remain from `<app>.env`.
+- If `<app>.prod.env` is absent, Compose still runs because `required: false`.
 
 To keep machine-specific files out of git, ignore them (example):
 

@@ -7,3 +7,5 @@ services:
     restart: unless-stopped
     env_file:
       - ./provision/duckdns.env
+      - path: ./provision/duckdns.prod.env
+        required: false
