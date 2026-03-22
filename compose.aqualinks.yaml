@@ -1,0 +1,13 @@
+services:
+
+  aqualinks:
+    container_name: aqualinks
+    image: ayanew/aqualinks:latest
+    restart: unless-stopped
+    user: "0" # root needed so node-red can match filesystem UIDs
+    env_file:
+      - ./provision/aqualinks.env
+    volumes:
+      - ./volumes/aqualinks/data:/data
+    ports:
+      - "1880:1880"

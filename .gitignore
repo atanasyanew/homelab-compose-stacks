@@ -1,0 +1,10 @@
+# Local work-in-progress area
+WIP/
+.claude/
+
+# Keep root volumes directory tracked, ignore all nested content
+volumes/**
+!volumes/
+
+# Environment overrides
+**/*.prod.env

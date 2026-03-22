@@ -1,0 +1,17 @@
+services:
+
+  homebridge:
+    container_name: homebridge
+    image: homebridge/homebridge:latest
+    restart: always
+    env_file:
+      - ./provision/homebridge.env
+    volumes:
+      - ./volumes/homebridge:/homebridge
+    ports:
+      - "8581:8581"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10mb"
+        max-file: "1"

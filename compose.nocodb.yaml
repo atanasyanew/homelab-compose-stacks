@@ -1,0 +1,32 @@
+services:
+
+  nocodb-db:
+    container_name: nocodb-db
+    image: postgres:16-alpine
+    restart: unless-stopped
+    env_file:
+      - ./provision/nocodb.env
+    volumes:
+      - nocodb-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nocodb -d nocodb"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+
+  nocodb:
+    container_name: nocodb
+    image: nocodb/nocodb:latest
+    restart: unless-stopped
+    depends_on:
+      nocodb-db:
+        condition: service_healthy
+    env_file:
+      - ./provision/nocodb.env
+    volumes:
+      - ./volumes/nocodb/data:/usr/app/data
+    ports:
+      - "8080:8080"
+
+volumes:
+  nocodb-db-data:
