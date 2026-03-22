@@ -1,0 +1,9 @@
+services:
+
+  duckdns:
+    image: lscr.io/linuxserver/duckdns:latest
+    container_name: duckdns
+    network_mode: host
+    restart: unless-stopped
+    env_file:
+      - ./provision/duckdns.env

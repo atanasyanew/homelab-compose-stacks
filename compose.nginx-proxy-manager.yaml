@@ -1,0 +1,21 @@
+services:
+
+  nginx-proxy-manager:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: nginx-proxy-manager
+    hostname: nginx-proxy-manager
+    restart: unless-stopped
+    env_file:
+      - ./provision/nginx-proxy-manager.env
+    ports:
+      - "80:80"
+      - "81:81"
+      - "4433:443"
+    volumes:
+      - ./volumes/nginx-proxy-manager/data:/data
+      - ./volumes/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

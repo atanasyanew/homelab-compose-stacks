@@ -1,0 +1,25 @@
+name: infrastructure-stack
+
+include:
+  - ./compose.nginx-proxy-manager.yaml
+  - ./compose.duckdns.yaml
+  - ./compose.cloudflare-ddns.yaml
+
+services:
+  nginx-proxy-manager:
+    env_file: !override
+      - ./provision/nginx-proxy-manager.env
+      - path: ./provision/nginx-proxy-manager.prod.env
+        required: false
+
+  duckdns:
+    env_file: !override
+      - ./provision/duckdns.env
+      - path: ./provision/duckdns.prod.env
+        required: false
+
+  cloudflare-ddns:
+    env_file: !override
+      - ./provision/cloudflare-ddns.env
+      - path: ./provision/cloudflare-ddns.prod.env
+        required: false
