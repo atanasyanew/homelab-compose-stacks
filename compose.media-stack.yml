@@ -1,0 +1,209 @@
+# Volume mapping convention for this media stack:
+# - ./content/... => shared media/download data (movies, shows, music, torrents)
+# - ./volumes/<app>/... => per-app persistent config/state
+
+services:
+
+  plex:
+    image: plexinc/pms-docker
+    container_name: plex
+    env_file:
+      - ./provision/media-stack.env
+    environment:
+      - VERSION=docker
+      - HOSTNAME=PlexServer
+    volumes:
+      - ./volumes/plex:/config
+      - ./content/media:/data/media
+      #- ${MEDIA_ROOT}/media:/data/media
+    network_mode: host
+    # ports: # when network: bridge
+    #   - "32400:32400/tcp" 
+    #   - "8324:8324/tcp"   # Required if network: bridge
+    #   - "32469:32469/tcp" # Required if network: bridge
+    #   - "1900:1900/udp"   # Required if network: bridge
+    #   - "32410:32410/udp" # Required if network: bridge
+    #   - "32412:32412/udp" # Required if network: bridge
+    #   - "32413:32413/udp" # Required if network: bridge
+    #   - "32414:32414/udp" # Required if network: bridge
+    privileged: true # libusb_init failed
+    restart: unless-stopped
+
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    env_file:
+      - ./provision/media-stack.env
+    volumes:
+      - ./volumes/radarr:/config
+      - ./content:/data
+    ports:
+      - "7878:7878"
+    restart: unless-stopped
+    networks:
+      - media-network
+
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    env_file:
+      - ./provision/media-stack.env
+    volumes:
+      - ./volumes/sonarr:/config
+      - ./content:/data
+    ports:
+      - "8989:8989"
+    restart: unless-stopped
+    networks:
+      - media-network
+
+  lidarr:
+    image: linuxserver/lidarr
+    container_name: lidarr
+    env_file:
+      - ./provision/media-stack.env
+    volumes:
+      - ./volumes/lidarr:/config
+      - ./content:/data
+    ports:
+      - "8686:8686"
+    restart: unless-stopped
+    networks:
+      - media-network
+
+  prowlarr:
+    image: linuxserver/prowlarr
+    container_name: prowlarr
+    env_file:
+      - ./provision/media-stack.env
+    volumes:
+      - ./volumes/prowlarr:/config
+    ports:
+      - "9696:9696"
+    restart: unless-stopped
+    networks:
+      - media-network
+
+  bazarr:
+    image: linuxserver/bazarr
+    container_name: bazarr
+    env_file:
+      - ./provision/media-stack.env
+    volumes:
+      - ./volumes/bazarr:/config
+      - ./content:/data
+    ports:
+      - "6767:6767"
+    restart: unless-stopped
+    networks:
+      - media-network
+
+  qbittorrent:
+    image: linuxserver/qbittorrent
+    container_name: qbittorrent
+    env_file:
+      - ./provision/media-stack.env
+    volumes:
+      - ./volumes/qbittorrent:/config
+      - ./content/torrents:/data/torrents
+      - ./content/media:/data/media
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    networks:
+      - media-network
+
+  jackett:
+    image: linuxserver/jackett
+    container_name: jackett
+    env_file:
+      - ./provision/media-stack.env
+    volumes:
+      - ./volumes/jackett:/config
+    ports:
+      - "9117:9117"
+    restart: unless-stopped
+    networks:
+      - media-network
+
+  ombi:
+    image: linuxserver/ombi
+    container_name: ombi
+    env_file:
+      - ./provision/media-stack.env
+    volumes:
+      - ./volumes/ombi:/config
+    ports:
+      - "3579:3579"
+    restart: unless-stopped
+    networks:
+      - media-network
+
+  heimdall:
+    image: linuxserver/heimdall
+    container_name: heimdall
+    env_file:
+      - ./provision/media-stack.env
+    volumes:
+      - ./volumes/heimdall:/config
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: unless-stopped
+    networks:
+      - media-network
+
+  overseerr:
+    image: lscr.io/linuxserver/overseerr
+    container_name: overseerr
+    env_file:
+      - ./provision/media-stack.env
+    volumes:
+      - ./volumes/overseerr:/config
+    ports:
+      - "5055:5055"
+    restart: unless-stopped
+    networks:
+      - media-network
+
+  suggestarr:
+    image: ciuse99/suggestarr
+    container_name: suggestarr
+    env_file:
+      - ./provision/media-stack.env
+    volumes:
+      - ./volumes/suggestarr:/app/config/config_files
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+    networks:
+      - media-network
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr
+    container_name: flaresolverr
+    env_file:
+      - ./provision/media-stack.env
+    volumes:
+      - ./volumes/flaresolverr:/config
+    ports:
+      - "8191:8191"
+    restart: unless-stopped
+    networks:
+      - media-network
+
+  huntarr:
+    image: ghcr.io/plexguide/huntarr:latest
+    container_name: huntarr
+    env_file:
+      - ./provision/media-stack.env
+    volumes:
+      - ./volumes/huntarr:/config
+    ports:
+      - "9705:9705"
+    restart: unless-stopped
+    networks:
+      - media-network
+
+networks:
+  media-network:
