@@ -1,0 +1,20 @@
+services:
+
+  adguard-home:
+    # Initial setup: http://<docker-host-ip>:3004
+    # After setup UI: http://<docker-host-ip>:8082
+    container_name: adguard-home
+    image: adguard/adguardhome:latest
+    restart: unless-stopped
+    env_file:
+      - ./provision/adguard-home.env
+      - path: ./provision/adguard-home.prod.env
+        required: false
+    volumes:
+      - ./volumes/adguard-home/work:/opt/adguardhome/work
+      - ./volumes/adguard-home/conf:/opt/adguardhome/conf
+    ports:
+      - "53:53/tcp"     # DNS (TCP)
+      - "53:53/udp"     # DNS (UDP)
+      - "8082:80/tcp"   # AdGuard web UI (after setup)
+      - "3004:3000/tcp" # AdGuard initial setup wizard
