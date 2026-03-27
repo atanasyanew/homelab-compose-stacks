@@ -1,0 +1,5 @@
+name: apps-stack
+
+include:
+  - ./compose.open-webui.yaml
+  - ./compose.homepage.yaml
