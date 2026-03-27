@@ -1,0 +1,20 @@
+services:
+
+  upsnap:
+    # Web UI: http://<docker-host-ip>:8090
+    # Local access from host: http://localhost:8090
+    container_name: upsnap
+    image: ghcr.io/seriousm4x/upsnap:5
+    restart: unless-stopped
+    cap_add:
+      - NET_RAW
+    cap_drop:
+      - ALL
+    env_file:
+      - ./provision/upsnap.env
+      - path: ./provision/upsnap.prod.env
+        required: false
+    volumes:
+      - ./volumes/upsnap:/app/pb_data
+    ports:
+      - "8090:8090"
