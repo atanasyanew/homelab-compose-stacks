@@ -6,6 +6,24 @@ This repository is a modular Docker Compose homelab collection.
 Each app is defined as a reusable module (`compose.<app>.yaml`), and machine-specific stacks combine modules with `include:` in `compose.stack.<name>.yaml`.
 Runtime configuration lives in `provision/<app>.env`, persistent data lives in `volumes/<app>/...`, and optional local overrides (for example `*.prod.env`) let you customize per machine without modifying tracked module files.
 
+## Quick start
+
+```bash
+# 1) Create local compose interpolation file
+cp .env.example .env
+
+# 2) Validate one module or one stack
+docker compose -f compose.<app>.yaml config -q
+docker compose -f compose.stack.<name>.yaml config -q
+
+# 3) Start and check a stack
+docker compose -f compose.stack.<name>.yaml up -d
+docker compose -f compose.stack.<name>.yaml ps
+
+# 4) Stop a stack
+docker compose -f compose.stack.<name>.yaml down
+```
+
 ## Environment files
 
 ### `.env` vs `provision/*.env`
