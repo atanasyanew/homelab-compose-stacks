@@ -1,16 +1,22 @@
 # Homelab Docker Compose Collection
 
+## Overview
+
 This repository is a modular Docker Compose homelab collection.
 Each app is defined as a reusable module (`compose.<app>.yaml`), and machine-specific stacks combine modules with `include:` in `compose.stack.<name>.yaml`.
 Runtime configuration lives in `provision/<app>.env`, persistent data lives in `volumes/<app>/...`, and optional local overrides (for example `*.prod.env`) let you customize per machine without modifying tracked module files.
 
-`.env` vs `provision/*.env`
+## Environment files
+
+### `.env` vs `provision/*.env`
 
 - Root `.env` is for Compose interpolation values used in compose files (for example `${CONTENT_ROOT}` in volume paths).
 - `provision/<app>.env` (and optional `provision/<app>.prod.env`) are loaded with `env_file:` and provide runtime environment variables to containers.
 - Service `env_file:` values are not a replacement for Compose interpolation sources; use root `.env`, exported shell vars, or `docker compose --env-file ...` when a compose file needs `${VAR}` resolution.
 
-Repo layout
+## Modules and stacks
+
+### Repo layout
 
 ```text
 repo/
@@ -28,7 +34,9 @@ repo/
 └── README.md
 ```
 
-Rules
+## Naming conventions
+
+### Rules
 
 1. File naming
 
@@ -105,7 +113,9 @@ You should be able to do:
 docker compose -f compose.aqualinks.yaml up -d
 without requiring a stack file.
 
-8. Runtime verification checklist
+## Validation and run commands
+
+### Runtime verification checklist
 
 After editing a module, validate and smoke test with:
 
@@ -119,16 +129,16 @@ curl -I http://localhost:<port>
 
 Use `https://` when the service exposes TLS.
 
-9. Docker Desktop / WSL networking note
+8. Docker Desktop / WSL networking note
 
 For browser-facing UIs on Docker Desktop/WSL, prefer explicit `ports` mappings.
 `network_mode: host` may work inside Linux but still be unreachable from Windows browsers.
 
-10. DB storage note for Docker Desktop / WSL
+9. DB storage note for Docker Desktop / WSL
 
 If a database container fails with permission errors on bind mounts (for example Postgres under `./volumes/<app>/db`), switch DB data to a named volume.
 
-Module template
+### Module template
 This is the pattern used for every app module.
 
 For example
@@ -193,7 +203,7 @@ services:
     restart: unless-stopped
 ```
 
-Stack file template
+### Stack file template
 
 This is the file you actually run.
 
@@ -210,7 +220,7 @@ docker compose -f compose.stack.media.yaml up -d
 
 Name stacks as compose.stack.<name>.yaml for consistent grouping.
 
-Stack override template
+### Stack override template
 
 Useful when a specific stack needs custom host ports or other tweaks.
 
@@ -240,7 +250,7 @@ services:
       - "8010:8000"
 ```
 
-Environment override pattern (base + optional prod)
+### Environment override pattern (base + optional prod)
 
 Use this when you want per-machine or production values without editing module files.
 
@@ -270,7 +280,7 @@ To keep machine-specific files out of git, ignore them (example):
 **/*.prod.env
 ```
 
-Safe assumptions
+### Safe assumptions
 
 every file compose.<app>.yaml is a reusable and runnable module
 every file compose.stack.<name>.yaml may be a runnable stack entrypoint
@@ -278,7 +288,7 @@ every file compose.stack.<name>.yaml may be a runnable stack entrypoint
 ./provision/<app>.env belongs to app <app>
 ./volumes/<app>/... belongs to app <app>
 
-Never do
+### Never do
 
 invent generic service names
 reuse db, redis, app
@@ -286,7 +296,7 @@ merge modules that expose conflicting host ports without changing them
 
 assume two apps can share the same database service unless explicitly designed that way
 
-Practical concerns
+### Practical concerns
 
 1. container_name
 
@@ -323,7 +333,7 @@ Otherwise keep apps internal.
 
 Good for homelab, but for anything sensitive, document that .env may contain secrets and should not be committed.
 
-Best minimal contract
+### Best minimal contract
 
 If you want the shortest workable standard, make it this:
 
@@ -343,7 +353,7 @@ uses include:
 
 may override ports or settings if needed
 
-Example final set
+### Example final set
 
 compose.aqualinks.yaml
 
@@ -392,7 +402,6 @@ services:
 
 ```
 
-
 compose.stack.media.yaml
 
 ```yaml
@@ -402,3 +411,11 @@ include:
   - ./compose.paperless.yaml
 
 ```
+
+## Operational notes
+
+- Compose interpolation (`${VAR}` in compose files) should come from root `.env`, exported shell vars, or `docker compose --env-file ...`; service-level `env_file` is runtime-only.
+- On Docker Desktop/WSL, browser-facing services are more reliable with explicit `ports` mappings than `network_mode: host`.
+- On Docker Desktop/WSL, stateful bind mounts can fail with permission/path issues; use named volumes when reliability matters.
+- Keep heavy platforms (for example Kasm Workspaces) in standalone stacks instead of bundling them into general app stacks.
+- Validate every changed compose file with `docker compose -f <file> config -q` before `up -d`.
