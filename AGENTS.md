@@ -16,6 +16,7 @@ Operational guide for coding agents in this repository.
 - Modules: `compose.*.yaml` (preferred) / `compose.*.yml` (legacy)
 - Stack example: `compose.iot-stack.yaml`
 - Env files: `provision/<app>.env`
+- Scripts: `scripts/<scope>/...` for operational helper automation
 - Persistent data: `volumes/<app>/...`
 - Standalone stack: `Standalone stacks/media-server/`
 

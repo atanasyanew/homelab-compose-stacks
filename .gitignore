@@ -7,4 +7,5 @@ volumes/**
 !volumes/
 
 # Environment overrides
+/.env
 **/*.prod.env

@@ -4,6 +4,12 @@ This repository is a modular Docker Compose homelab collection.
 Each app is defined as a reusable module (`compose.<app>.yaml`), and machine-specific stacks combine modules with `include:` in `compose.<stack>.yaml`.
 Runtime configuration lives in `provision/<app>.env`, persistent data lives in `volumes/<app>/...`, and optional local overrides (for example `*.prod.env`) let you customize per machine without modifying tracked module files.
 
+`.env` vs `provision/*.env`
+
+- Root `.env` is for Compose interpolation values used in compose files (for example `${CONTENT_ROOT}` in volume paths).
+- `provision/<app>.env` (and optional `provision/<app>.prod.env`) are loaded with `env_file:` and provide runtime environment variables to containers.
+- Service `env_file:` values are not a replacement for Compose interpolation sources; use root `.env`, exported shell vars, or `docker compose --env-file ...` when a compose file needs `${VAR}` resolution.
+
 Repo layout
 
 ```text
