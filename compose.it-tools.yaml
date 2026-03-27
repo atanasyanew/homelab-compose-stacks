@@ -1,0 +1,12 @@
+services:
+
+  it-tools:
+    container_name: it-tools
+    image: corentinth/it-tools:latest
+    restart: unless-stopped
+    env_file:
+      - ./provision/it-tools.env
+      - path: ./provision/it-tools.prod.env
+        required: false
+    ports:
+      - "8085:80"
