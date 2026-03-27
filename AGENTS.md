@@ -3,7 +3,7 @@ Operational guide for coding agents in this repository.
 
 ## Repository overview
 - This repo is a modular Docker Compose collection for homelab/self-hosting.
-- Root files are mostly `compose.<app>.yaml` modules and `compose.<stack>.yaml` entrypoints.
+- Root files are mostly `compose.<app>.yaml` modules and `compose.stack.<name>.yaml` entrypoints.
 - Standalone media stack lives at `Standalone stacks/media-server/docker-compose.yml`.
 - Primary repo guidance: `CLAUDE.md` and `README.md`.
 
@@ -14,7 +14,7 @@ Operational guide for coding agents in this repository.
 
 ## Key paths
 - Modules: `compose.*.yaml` (preferred) / `compose.*.yml` (legacy)
-- Stack example: `compose.iot-stack.yaml`
+- Stack example: `compose.stack.iot.yaml`
 - Env files: `provision/<app>.env`
 - Scripts: `scripts/<scope>/...` for operational helper automation
 - Persistent data: `volumes/<app>/...`
@@ -39,7 +39,8 @@ docker compose -f compose.n8n.yaml config -q
 General form:
 
 ```bash
-docker compose -f compose.<app-or-stack>.yaml config -q
+docker compose -f compose.<app>.yaml config -q
+docker compose -f compose.stack.<name>.yaml config -q
 ```
 
 ### Validate all root compose files
@@ -54,7 +55,7 @@ docker compose -f compose.n8n.yaml up -d
 
 ### Run one stack entrypoint
 ```bash
-docker compose -f compose.iot-stack.yaml up -d
+docker compose -f compose.stack.iot.yaml up -d
 ```
 
 ### Run standalone media stack
@@ -90,7 +91,7 @@ This repo is YAML-first. Keep config explicit and predictable.
 
 ### Naming conventions
 - Module filename: `compose.<app>.yaml`
-- Stack filename: `compose.<stack>.yaml`
+- Stack filename: `compose.stack.<name>.yaml`
 - Use one app identity everywhere:
   - Service: `<app>`
   - Sidecars: `<app>-db`, `<app>-redis`, etc.

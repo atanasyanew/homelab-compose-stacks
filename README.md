@@ -1,7 +1,7 @@
 # Homelab Docker Compose Collection
 
 This repository is a modular Docker Compose homelab collection.
-Each app is defined as a reusable module (`compose.<app>.yaml`), and machine-specific stacks combine modules with `include:` in `compose.<stack>.yaml`.
+Each app is defined as a reusable module (`compose.<app>.yaml`), and machine-specific stacks combine modules with `include:` in `compose.stack.<name>.yaml`.
 Runtime configuration lives in `provision/<app>.env`, persistent data lives in `volumes/<app>/...`, and optional local overrides (for example `*.prod.env`) let you customize per machine without modifying tracked module files.
 
 `.env` vs `provision/*.env`
@@ -34,7 +34,7 @@ Rules
 
 app modules: compose.<app>.yaml
 
-runnable stacks: compose.<stack>.yaml
+runnable stacks: compose.stack.<name>.yaml
 
 Prefer `.yaml` as the repo convention. Keep `.yml` only for legacy files until they are consolidated.
 
@@ -42,7 +42,7 @@ Examples:
 
 compose.aqualinks.yaml
 compose.paperless.yaml
-compose.media.yaml
+compose.stack.media.yaml
 
 2. App identity
 
@@ -205,10 +205,10 @@ include:
 Run with:
 
 ```bash
-docker compose -f compose.media.yaml up -d
+docker compose -f compose.stack.media.yaml up -d
 ```
 
-Name it compose.media.yaml, not compose.media-stack.yaml, unless you want the extra word for readability.
+Name stacks as compose.stack.<name>.yaml for consistent grouping.
 
 Stack override template
 
@@ -273,7 +273,7 @@ To keep machine-specific files out of git, ignore them (example):
 Safe assumptions
 
 every file compose.<app>.yaml is a reusable and runnable module
-every file compose.<stack>.yaml may be a runnable stack entrypoint
+every file compose.stack.<name>.yaml may be a runnable stack entrypoint
 
 ./provision/<app>.env belongs to app <app>
 ./volumes/<app>/... belongs to app <app>
@@ -335,7 +335,7 @@ bind mounts are ./volumes/<app>/...
 no generic resource names
 runnable standalone
 internal-only by default
-For every compose.<stack>.yaml:
+For every compose.stack.<name>.yaml:
 
 has name: <stack>
 
@@ -393,7 +393,7 @@ services:
 ```
 
 
-compose.media.yaml
+compose.stack.media.yaml
 
 ```yaml
 
