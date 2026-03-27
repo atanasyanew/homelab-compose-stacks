@@ -1,0 +1,4 @@
+name: kasm-workspaces-stack
+
+include:
+  - ./compose.kasm-workspaces.yaml

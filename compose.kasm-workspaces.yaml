@@ -1,0 +1,22 @@
+services:
+
+  kasm-workspaces:
+    # Setup wizard: https://<docker-host-ip>:3003
+    # Workspaces UI: https://<docker-host-ip>:4443
+    container_name: kasm-workspaces
+    image: lscr.io/linuxserver/kasm:latest
+    restart: unless-stopped
+    privileged: true
+    env_file:
+      - ./provision/kasm-workspaces.env
+      - path: ./provision/kasm-workspaces.prod.env
+        required: false
+    volumes:
+      - kasm-workspaces-opt:/opt
+      - ./volumes/kasm-workspaces/profiles:/profiles
+    ports:
+      - "3003:3000"
+      - "4443:4443"
+
+volumes:
+  kasm-workspaces-opt:
