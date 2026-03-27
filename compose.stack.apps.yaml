@@ -5,3 +5,5 @@ include:
   - ./compose.homepage.yaml
   - ./compose.it-tools.yaml
   - ./compose.upsnap.yaml
+  - ./compose.freshrss.yaml
+  - ./compose.full-text-rss.yaml

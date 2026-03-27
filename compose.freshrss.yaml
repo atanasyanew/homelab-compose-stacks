@@ -1,0 +1,15 @@
+services:
+
+  freshrss:
+    container_name: freshrss
+    image: freshrss/freshrss:latest
+    restart: unless-stopped
+    env_file:
+      - ./provision/freshrss.env
+      - path: ./provision/freshrss.prod.env
+        required: false
+    ports:
+      - "8086:80"
+    volumes:
+      - ./volumes/freshrss/data:/var/www/FreshRSS/data
+      - ./volumes/freshrss/extensions:/var/www/FreshRSS/extensions

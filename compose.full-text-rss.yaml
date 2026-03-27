@@ -1,0 +1,13 @@
+services:
+
+  full-text-rss:
+    # Web UI/API: http://<docker-host-ip>:8087
+    container_name: full-text-rss
+    image: heussd/fivefilters-full-text-rss:latest
+    restart: unless-stopped
+    env_file:
+      - ./provision/full-text-rss.env
+      - path: ./provision/full-text-rss.prod.env
+        required: false
+    ports:
+      - "8087:80"
