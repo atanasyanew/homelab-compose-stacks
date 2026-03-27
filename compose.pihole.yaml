@@ -1,0 +1,17 @@
+services:
+
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    restart: unless-stopped
+    env_file:
+      - ./provision/pihole.env
+      - path: ./provision/pihole.prod.env
+        required: false
+    volumes:
+      - ./volumes/pihole/etc-pihole:/etc/pihole
+      - ./volumes/pihole/etc-dnsmasq.d:/etc/dnsmasq.d
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "8081:80/tcp"

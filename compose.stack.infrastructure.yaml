@@ -2,5 +2,6 @@ name: infrastructure-stack
 
 include:
   - ./compose.nginx-proxy-manager.yaml
+  - ./compose.pihole.yaml
   - ./compose.duckdns.yaml
   - ./compose.cloudflare-ddns.yaml
