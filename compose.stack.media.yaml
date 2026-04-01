@@ -1,6 +1,6 @@
 # Volume mapping convention for this media stack:
 # - ${CONTENT_ROOT}/... => shared media/download data (movies, shows, music, torrents)
-# - ./volumes/<app>/... => per-app persistent config/state
+# - ./volumes/media-stack/<app>/... => per-app persistent config/state
 # Setup:
 # - Quick start: cp .env.example .env
 # - Create/update root .env and set CONTENT_ROOT (for example: CONTENT_ROOT=./content)
@@ -40,7 +40,7 @@ services:
       - VERSION=docker
       - HOSTNAME=PlexServer
     volumes:
-      - ./volumes/plex:/config
+      - ./volumes/media-stack/plex:/config
       - ${CONTENT_ROOT}/media:/data/media
     network_mode: host
     # ports: # when network: bridge
@@ -63,7 +63,7 @@ services:
       - path: ./provision/media-stack.prod.env
         required: false
     volumes:
-      - ./volumes/radarr:/config
+      - ./volumes/media-stack/radarr:/config
       - ${CONTENT_ROOT}:/data
     ports:
       - "7878:7878"
@@ -79,7 +79,7 @@ services:
       - path: ./provision/media-stack.prod.env
         required: false
     volumes:
-      - ./volumes/sonarr:/config
+      - ./volumes/media-stack/sonarr:/config
       - ${CONTENT_ROOT}:/data
     ports:
       - "8989:8989"
@@ -95,7 +95,7 @@ services:
       - path: ./provision/media-stack.prod.env
         required: false
     volumes:
-      - ./volumes/lidarr:/config
+      - ./volumes/media-stack/lidarr:/config
       - ${CONTENT_ROOT}:/data
     ports:
       - "8686:8686"
@@ -112,7 +112,7 @@ services:
       - path: ./provision/media-stack.prod.env
         required: false
     volumes:
-      - ./volumes/bazarr:/config
+      - ./volumes/media-stack/bazarr:/config
       - ${CONTENT_ROOT}:/data
     ports:
       - "6767:6767"
@@ -128,7 +128,7 @@ services:
       - path: ./provision/media-stack.prod.env
         required: false
     volumes:
-      - ./volumes/qbittorrent:/config
+      - ./volumes/media-stack/qbittorrent:/config
       - ${CONTENT_ROOT}/torrents:/data/torrents
       - ${CONTENT_ROOT}/media:/data/media
     ports:
@@ -145,7 +145,7 @@ services:
       - path: ./provision/media-stack.prod.env
         required: false
     volumes:
-      - ./volumes/prowlarr:/config
+      - ./volumes/media-stack/prowlarr:/config
     ports:
       - "9696:9696"
     restart: unless-stopped
@@ -160,7 +160,7 @@ services:
       - path: ./provision/media-stack.prod.env
         required: false
     volumes:
-      - ./volumes/jackett:/config
+      - ./volumes/media-stack/jackett:/config
     ports:
       - "9117:9117"
     restart: unless-stopped
@@ -175,7 +175,7 @@ services:
       - path: ./provision/media-stack.prod.env
         required: false
     volumes:
-      - ./volumes/ombi:/config
+      - ./volumes/media-stack/ombi:/config
     ports:
       - "3579:3579"
     restart: unless-stopped
@@ -190,7 +190,7 @@ services:
       - path: ./provision/media-stack.prod.env
         required: false
     volumes:
-      - ./volumes/heimdall:/config
+      - ./volumes/media-stack/heimdall:/config
     ports:
       - "80:80"
       - "443:443"
@@ -206,7 +206,7 @@ services:
       - path: ./provision/media-stack.prod.env
         required: false
     volumes:
-      - ./volumes/overseerr:/config
+      - ./volumes/media-stack/overseerr:/config
     ports:
       - "5055:5055"
     restart: unless-stopped
@@ -221,7 +221,7 @@ services:
       - path: ./provision/media-stack.prod.env
         required: false
     volumes:
-      - ./volumes/suggestarr:/app/config/config_files
+      - ./volumes/media-stack/suggestarr:/app/config/config_files
     ports:
       - "5000:5000"
     restart: unless-stopped
@@ -236,7 +236,7 @@ services:
       - path: ./provision/media-stack.prod.env
         required: false
     volumes:
-      - ./volumes/flaresolverr:/config
+      - ./volumes/media-stack/flaresolverr:/config
     ports:
       - "8191:8191"
     restart: unless-stopped
@@ -251,7 +251,7 @@ services:
       - path: ./provision/media-stack.prod.env
         required: false
     volumes:
-      - ./volumes/huntarr:/config
+      - ./volumes/media-stack/huntarr:/config
     ports:
       - "9705:9705"
     restart: unless-stopped
