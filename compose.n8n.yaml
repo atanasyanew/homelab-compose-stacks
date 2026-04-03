@@ -1,0 +1,14 @@
+services:
+
+  n8n:
+    container_name: n8n
+    image: n8nio/n8n:latest
+    restart: unless-stopped
+    env_file:
+      - ./provision/n8n.env
+      - path: ./provision/n8n.prod.env
+        required: false
+    volumes:
+      - ./volumes/n8n/data:/home/node/.n8n
+    ports:
+      - "5678:5678"
