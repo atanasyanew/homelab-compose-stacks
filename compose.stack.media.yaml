@@ -243,20 +243,5 @@ services:
     networks:
       - media-network
 
-  huntarr:
-    image: ghcr.io/plexguide/huntarr:latest
-    container_name: huntarr
-    env_file:
-      - ./provision/media-stack.env
-      - path: ./provision/media-stack.prod.env
-        required: false
-    volumes:
-      - ./volumes/media-stack/huntarr:/config
-    ports:
-      - "9705:9705"
-    restart: unless-stopped
-    networks:
-      - media-network
-
 networks:
   media-network:
