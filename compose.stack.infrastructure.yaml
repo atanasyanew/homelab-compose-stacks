@@ -1,6 +1,7 @@
 name: infrastructure-stack
 
 include:
+  - ./compose.homepage.yaml
   - ./compose.nginx-proxy-manager.yaml
   # Choose one DNS blocker (Pi-hole or AdGuard Home), not both on same host.
   # - ./compose.pihole.yaml
