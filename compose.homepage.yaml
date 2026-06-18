@@ -9,6 +9,6 @@ services:
       - path: ./provision/homepage.prod.env
         required: false
     ports:
-      - "3002:3000"
+      - "3000:3000"
     volumes:
       - ./volumes/homepage/config:/app/config
