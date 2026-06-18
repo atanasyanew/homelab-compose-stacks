@@ -1,0 +1,15 @@
+services:
+
+  homarr:
+    container_name: homarr
+    image: ghcr.io/homarr-labs/homarr:latest
+    restart: unless-stopped
+    env_file:
+      - ./provision/homarr.env
+      - path: ./provision/homarr.prod.env
+        required: false
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./volumes/homarr/appdata:/appdata
+    ports:
+      - "7575:7575"

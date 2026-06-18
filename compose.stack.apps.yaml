@@ -3,6 +3,7 @@ name: apps-stack
 include:
   - ./compose.open-webui.yaml
   - ./compose.homepage.yaml
+  - ./compose.homarr.yaml
   - ./compose.it-tools.yaml
   - ./compose.upsnap.yaml
   - ./compose.freshrss.yaml
